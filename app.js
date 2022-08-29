@@ -1,10 +1,10 @@
 const App = () => {
 
+  const [title, setTitle] = React.useState("Session")
+  const [playing, setPlaying] = React.useState(false);
   const [breakLength, setBreakLength] = React.useState(5)
   const [sessionLength, setSessionLength] = React.useState(25)
   const [timeLeft, seTtimeLeft] = React.useState(1500)
-  const [title, setTitle] = React.useState("Session")
-  const [playing, setPlaying] = React.useState(false);
 
   const timeout = setTimeout(() => {
     if(timeLeft && playing) seTtimeLeft(timeLeft - 1)
@@ -39,7 +39,7 @@ const App = () => {
     setBreakLength(5)
     setSessionLength(25)
     setTitle("Session");
-    const audio = document.getElementById("beep")
+    const audio = document.getElementById("audioClip")
     audio.pause()
     audio.currentTime = 0
   }
@@ -50,7 +50,7 @@ const App = () => {
   }
 
   const resetTimer = () => {
-    const audio = document.getElementById("beep");
+    const audio = document.getElementById("audioClip");
     if(!timeLeft && title === "Session"){
       seTtimeLeft(breakLength * 60)
       setTitle("Break")
@@ -79,9 +79,9 @@ const App = () => {
 
   const timeFormatter = () => {
     const minutes = Math.floor(timeLeft / 60)
-    const seconds = timeLeft - minutes * 60;
-    const formattedSeconds = seconds < 10 ? '0' + seconds : seconds
+    const seconds = timeLeft - minutes * 60
     const formattedMinutes = minutes < 10 ? '0' + minutes : minutes
+    const formattedSeconds = seconds < 10 ? '0' + seconds : seconds
     return `${formattedMinutes}:${formattedSeconds}`
   }
 
@@ -150,7 +150,7 @@ const App = () => {
           </div>
         </div>
       </div>
-      <audio id="beep" preload="auto" src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav" />
+      <audio id="audioClip" preload="auto" src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav" />
     </div>
   )
 }
