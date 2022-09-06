@@ -7,7 +7,7 @@ const App = () => {
   const [timeLeft, seTtimeLeft] = React.useState(1500)
 
   const timeout = setTimeout(() => {
-    if(timeLeft && playing) seTtimeLeft(timeLeft - 1)
+    if(timeLeft>=0 && playing) seTtimeLeft(timeLeft - 1)
   }, 1000)
 
   const handleBreakIncrease = () => {
@@ -39,7 +39,7 @@ const App = () => {
     setBreakLength(5)
     setSessionLength(25)
     setTitle("Session");
-    const audio = document.getElementById("audioClip")
+    const audio = document.getElementById("beep")
     audio.pause()
     audio.currentTime = 0
   }
@@ -50,17 +50,18 @@ const App = () => {
   }
 
   const resetTimer = () => {
-    const audio = document.getElementById("audioClip");
-    if(!timeLeft && title === "Session"){
-      seTtimeLeft(breakLength * 60)
-      setTitle("Break")
+    const audio = document.getElementById("beep");
+    if(!timeLeft) {
+      audio.currenTime = 0
       audio.play()
     }
-    if(!timeLeft && title === "Break"){
+    if(timeLeft<0 && title === "Session"){
+      seTtimeLeft(breakLength * 60)
+      setTitle("Break")
+    }
+    if(timeLeft<0 && title === "Break"){
       seTtimeLeft(sessionLength * 60)
       setTitle("Session")
-      audio.pause()
-      audio.currentTime = 0
     }
   }
 
@@ -105,8 +106,8 @@ const App = () => {
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="row py-3 justify-content-center">
-            <div className="col-6 text-center"><h3>{breakLength}</h3></div>
-            <div className="col-6 text-center"><h3>{sessionLength}</h3></div>
+            <div className="col-6 text-center"><h3 id="break-length">{breakLength}</h3></div>
+            <div className="col-6 text-center"><h3 id="session-length">{sessionLength}</h3></div>
           </div>
         </div>
       </div>
@@ -134,7 +135,7 @@ const App = () => {
         <div className="col-md-3 col-6">
           <div className="row border rounded-pill text-center">
             <div className="py-3"><h3 id="timer-label">{title}</h3></div>
-            <div className="py-3"><h3 id="timer-left">{timeFormatter()}</h3></div>
+            <div className="py-3"><h3 id="time-left">{timeFormatter()}</h3></div>
           </div>
         </div>
       </div>
@@ -150,7 +151,7 @@ const App = () => {
           </div>
         </div>
       </div>
-      <audio id="audioClip" preload="auto" src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav" />
+      <audio id="beep" preload="auto" src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav" />
     </div>
   )
 }
